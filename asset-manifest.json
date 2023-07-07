@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/FACEDETECTOR-APP/static/css/main.6ec798c7.css",
+    "main.js": "/FACEDETECTOR-APP/static/js/main.c05490e7.js",
+    "static/js/787.93f5cbba.chunk.js": "/FACEDETECTOR-APP/static/js/787.93f5cbba.chunk.js",
+    "index.html": "/FACEDETECTOR-APP/index.html",
+    "main.6ec798c7.css.map": "/FACEDETECTOR-APP/static/css/main.6ec798c7.css.map",
+    "main.c05490e7.js.map": "/FACEDETECTOR-APP/static/js/main.c05490e7.js.map",
+    "787.93f5cbba.chunk.js.map": "/FACEDETECTOR-APP/static/js/787.93f5cbba.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6ec798c7.css",
+    "static/js/main.c05490e7.js"
+  ]
+}
