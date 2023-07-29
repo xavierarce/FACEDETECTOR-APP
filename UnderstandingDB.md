@@ -23,6 +23,6 @@ SELECT * FROM users ORDER BY score DESC;
 <!-- AVG  of column -->
 SELECT AVG(score) FROM users;
 <!-- Show Sum of Column  -->
-test=# SELECT SUM(score) FROM users;
+ SELECT SUM(score) FROM users;
 <!-- Show Count of Column -->
-test=# SELECT COUNT(score) FROM users;
+ SELECT COUNT(score) FROM users;
