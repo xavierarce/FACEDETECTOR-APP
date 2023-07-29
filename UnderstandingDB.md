@@ -20,7 +20,9 @@ UPDATE users SET score = 100 WHERE name= 'Milena' OR name='Sthefany';
 SELECT * FROM users WHERE name LIKE 'A%';
 <!-- Descending Order -->
 SELECT * FROM users ORDER BY score DESC;
-<!-- AVG Sum of column -->
+<!-- AVG  of column -->
 SELECT AVG(score) FROM users;
-test=# SELECT SUM(score) FROM users
+<!-- Show Sum of Column  -->
+test=# SELECT SUM(score) FROM users;
+<!-- Show Count of Column -->
 test=# SELECT COUNT(score) FROM users;
