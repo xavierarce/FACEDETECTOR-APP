@@ -26,3 +26,5 @@ SELECT AVG(score) FROM users;
  SELECT SUM(score) FROM users;
 <!-- Show Count of Column -->
  SELECT COUNT(score) FROM users;
+ <!-- Change specific value-->
+ UPDATE movies SET release_year = 1999 WHERE name = "Shrek 2";
