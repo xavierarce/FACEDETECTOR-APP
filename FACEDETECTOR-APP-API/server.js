@@ -1,7 +1,20 @@
 import Express  from "express";
 import bcrypt from "bcryptjs";
 import cors from 'cors';
+import knex from 'knex';
 
+const postgres = knex({
+  client: 'pg',
+  connection: {
+    host : '127.0.0.1',
+    port : 3306,
+    user : 'postgres',
+    password : 'test',
+    database : 'smartbrain'
+  }
+});
+
+console.log(postgres.select('*').from('users'));
 
 const app = Express();
 
@@ -78,7 +91,7 @@ app.get('/profile/:id',(req,res)=>{
       found = true;
       return res.json(user);
     }
-  })  
+  })
   if(!found){
     res.status(400).json('Not found')
   }
