@@ -36,7 +36,6 @@ class Signin extends React.Component {
 			}
 		})
 		.catch(()=>alert('Invalid'));
-		console.log(this.state)
 	}
 	
 
