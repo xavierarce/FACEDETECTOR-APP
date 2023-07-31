@@ -14,9 +14,7 @@ const dbSQL = knex({
   }
 });
 
-dbSQL.select('*').from('users').then(data=>{
-  console.log(data)
-});
+
 
 const app = Express();
 
@@ -24,21 +22,19 @@ app.use(Express.json());
 app.use(cors());
 
 
-app.get('/',(req,res)=>{
-  res.send(database.users)
-})
+// app.get('/',(req,res)=>{
+//   res.send(database.users)
+// })
 
 app.post('/signin',(req,res)=>{
   dbSQL.select('email','hash').from('login')
     .where('email','=', req.body.email)
     .then(data =>{
       const isValid = bcrypt.compareSync(req.body.password, data[0].hash); // true
-      console.log(isValid);
       if(isValid){
         return dbSQL.select('*').from('users')
         .where('email','=', req.body.email)
         .then(user=>{
-          console.log(user);
           res.json(user[0])
         })
         .catch(err => res.status(400).json('Unable to get user'))
@@ -102,17 +98,8 @@ app.put('/image',(req,res)=>{
 })
 
 
-
-
-
-// // As of bcryptjs 2.4.0, compare returns a promise if callback is omitted:
-// bcrypt.compare("B4c0/\/", hash).then((res) => {
-//   // res === true
-// });
-
-
 app.listen(3000,()=>{
-    console.log('runnin')
+    console.log('Running')
 })
 
 
