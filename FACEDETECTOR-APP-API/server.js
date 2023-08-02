@@ -27,6 +27,9 @@ app.use(cors());
 // })
 
 app.post('/signin',(req,res)=>{
+  if(!email || !password){
+    return res.status(400).json('Incorrect form submission')
+  }
   dbSQL.select('email','hash').from('login')
     .where('email','=', req.body.email)
     .then(data =>{
@@ -46,6 +49,9 @@ app.post('/signin',(req,res)=>{
 
 app.post('/register',(req,res)=>{
   const {email, name, password} = req.body;
+  if(!email || !name || !password){
+    return res.status(400).json('Incorrect form submission')
+  }
   var salt = bcrypt.genSaltSync(10);
   var hash = bcrypt.hashSync(password, salt);
     dbSQL.transaction(trx=>{
