@@ -66,54 +66,41 @@ class App extends Component {
   this.setState({input:event.target.value});
   }
 
-  // app.js
+  onPictureSubmit = () => {
+    this.setState({ imageUrl: this.state.input });
 
-// ... Your existing code ...
-
-// app.js
-
-// ... Your existing code ...
-
-onPictureSubmit = () => {
-  this.setState({ imageUrl: this.state.input });
-
-  // Send the image URL to your backend API endpoint
-  fetch('http://localhost:3000/detect-face', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      imageUrl: this.state.input,
-    }),
-  })
-    .then(response => response.json())
-    .then(result => {
-      // Process the result and update the state or perform other actions
-      // For example, you can call displayFaceBox() and update user entries
-      if (result) {
-        fetch('http://localhost:3000/image', {
-          method: 'put',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: this.state.user.id
-          })
-        })
-          .then(result => result.json())
-          .then(count => {
-            this.setState(Object.assign(this.state.user, { entries: count }));
-          })
-          .catch(console.log);
-      }
-      this.displayFaceBox(this.calculateFaceLocation(result));
+    // Send the image URL to your backend API endpoint
+    fetch('http://localhost:3000/detect-face', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        imageUrl: this.state.input,
+      }),
     })
-    .catch(error => console.log('error', error));
-};
-
-// ... Your other functions ...
-
-
-// ... Your other functions ...
+      .then(response => response.json())
+      .then(result => {
+        // Process the result and update the state or perform other actions
+        // For example, you can call displayFaceBox() and update user entries
+        if (result) {
+          fetch('http://localhost:3000/image', {
+            method: 'put',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+          })
+            .then(result => result.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, { entries: count }));
+            })
+            .catch(console.log);
+        }
+        this.displayFaceBox(this.calculateFaceLocation(result));
+      })
+      .catch(error => console.log('error', error));
+  };
 
 
   onRouteChange = (route) => {
