@@ -22,10 +22,6 @@ app.use(Express.json());
 app.use(cors());
 
 
-// app.get('/',(req,res)=>{
-//   res.send(database.users)
-// })
-
 app.post('/signin',(req,res)=>{
   const {email, password} = req.body;
   if(!email || !password){
@@ -104,15 +100,8 @@ app.put('/image',(req,res)=>{
   .catch(err=>res.status(400).json('Unable to get entries'))
 })
 
-// server.js
-
-// ... Your existing code ...
 
 const API_KEY = '6c6341d2800648e98e252d49de65e010'; // Replace this with your actual API key
-
-// server.js
-
-// ... Your existing code ...
 
 app.post('/detect-face', (req, res) => {
   const { imageUrl } = req.body;
@@ -155,15 +144,6 @@ app.post('/detect-face', (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     });
 });
-
-// ... Your other routes ...
-
-
-
-// ... Your other routes ...
-
-
-
 
 
 app.listen(3000,()=>{
