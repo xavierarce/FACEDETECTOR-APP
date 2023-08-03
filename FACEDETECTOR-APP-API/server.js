@@ -27,16 +27,17 @@ app.use(cors());
 // })
 
 app.post('/signin',(req,res)=>{
+  const {email, password} = req.body;
   if(!email || !password){
     return res.status(400).json('Incorrect form submission')
   }
   dbSQL.select('email','hash').from('login')
-    .where('email','=', req.body.email)
+    .where('email','=', email)
     .then(data =>{
-      const isValid = bcrypt.compareSync(req.body.password, data[0].hash); // true
+      const isValid = bcrypt.compareSync(password, data[0].hash); // true
       if(isValid){
         return dbSQL.select('*').from('users')
-        .where('email','=', req.body.email)
+        .where('email','=', email)
         .then(user=>{
           res.json(user[0])
         })
@@ -102,6 +103,9 @@ app.put('/image',(req,res)=>{
   })
   .catch(err=>res.status(400).json('Unable to get entries'))
 })
+
+
+
 
 
 app.listen(3000,()=>{
