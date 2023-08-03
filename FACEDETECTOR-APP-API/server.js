@@ -104,6 +104,64 @@ app.put('/image',(req,res)=>{
   .catch(err=>res.status(400).json('Unable to get entries'))
 })
 
+// server.js
+
+// ... Your existing code ...
+
+const API_KEY = '6c6341d2800648e98e252d49de65e010'; // Replace this with your actual API key
+
+// server.js
+
+// ... Your existing code ...
+
+app.post('/detect-face', (req, res) => {
+  const { imageUrl } = req.body;
+
+  // You can directly pass the imageUrl to the external API call
+  const raw = JSON.stringify({
+    "user_app_id": {
+      "user_id": "clarifai",
+      "app_id": "main"
+    },
+    "inputs": [
+      {
+        "data": {
+          "image": {
+            "url": imageUrl
+          }
+        }
+      }
+    ]
+  });
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Key ' + API_KEY, // Pass the API key in the Authorization header
+    },
+    body: raw
+  };
+
+  // Now make the external API call
+  fetch(`https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`, requestOptions)
+    .then(response => response.text())
+    .then(result => {
+      // Process the result and send it back to the frontend
+      res.json(result);
+    })
+    .catch(error => {
+      console.log('error', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
+// ... Your other routes ...
+
+
+
+// ... Your other routes ...
+
 
 
 
