@@ -10,24 +10,26 @@ import Rank from './components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
 
 
+const initialState ={
+  input: '',
+  imageUrl: '',
+  box:{},
+  route: 'signin',
+  isSignedIn : false,
+  user:{
+    id:'',
+    name : '',
+    password:'',
+    email: '',
+    entries: 0,
+    joined: ''
+  }
+}
+
 class App extends Component {
   constructor(){
     super();
-    this.state={
-      input: '',
-      imageUrl: '',
-      box:{},
-      route: 'signin',
-      isSignedIn : false,
-      user:{
-        id:'',
-        name : '',
-        password:'',
-        email: '',
-        entries: 0,
-        joined: ''
-      }
-    }
+    this.state= initialState;
   }
 
   loadUser=(data)=>{
@@ -41,11 +43,6 @@ class App extends Component {
     }})
   }
 
-  // componentDidMount(){
-  //   fetch('http://localhost:3000/')
-  //     .then(response=>response.json()
-  //     .then(console.log))
-  // }
 
   calculateFaceLocation =(data)=>{
     const clarifaiFace = JSON.parse(data).outputs[0].data.regions[0].region_info.bounding_box;
@@ -69,75 +66,68 @@ class App extends Component {
   this.setState({input:event.target.value});
   }
 
-  onPictureSubmit = ()=>{
-    this.setState({imageUrl:this.state.input})
-  
-    const IMAGE_URL = this.state.input;
+  // app.js
 
-    const raw = JSON.stringify({
-      "user_app_id": {
-        "user_id": "clarifai",
-        "app_id": "main"
-      },
-      "inputs": [
-          {
-          "data": {
-                  "image": {
-                      "url": IMAGE_URL
-                    }
-                }
-            }
-        ]
-    });
+// ... Your existing code ...
 
-    const requestOptions = {
-      method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Key 6c6341d2800648e98e252d49de65e010'
-        },
-        body: raw
-    };
+// app.js
 
-    fetch(`https://api.clarifai.com/v2/models/face-detection/versions/6dc7e46bc9124c5c8824be4822abe105/outputs`, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-          if(result){
-            fetch('http://localhost:3000/image',{
-              method:'put',
-              headers:{'Content-Type':'application/json'},
-              body:JSON.stringify({
-                id:this.state.user.id
-              })
-            })
-              .then(result=> result.json())
-              .then(count =>{
-                this.setState(Object.assign(this.state.user,{entries:count})
-                  //! {user:{
-                  //!   entries: count
-                  //! }}
-                )
-              })
-          }
-          this.displayFaceBox(this.calculateFaceLocation(result))
+// ... Your existing code ...
+
+onPictureSubmit = () => {
+  this.setState({ imageUrl: this.state.input });
+
+  // Send the image URL to your backend API endpoint
+  fetch('http://localhost:3000/detect-face', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      imageUrl: this.state.input,
+    }),
+  })
+    .then(response => response.json())
+    .then(result => {
+      // Process the result and update the state or perform other actions
+      // For example, you can call displayFaceBox() and update user entries
+      if (result) {
+        fetch('http://localhost:3000/image', {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: this.state.user.id
+          })
         })
-        .catch(error => console.log('error', error));
-      
+          .then(result => result.json())
+          .then(count => {
+            this.setState(Object.assign(this.state.user, { entries: count }));
+          })
+          .catch(console.log);
+      }
+      this.displayFaceBox(this.calculateFaceLocation(result));
+    })
+    .catch(error => console.log('error', error));
+};
 
-  }
+// ... Your other functions ...
+
+
+// ... Your other functions ...
+
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState({
-        isSignedIn: false,
+      this.setState(Object.assign({}, initialState, {
         route: 'signin', //! Set the route to 'signin' after signing out
-      });
+      }));
     } else if (route === 'home') {
       this.setState({ isSignedIn: true, route: 'home' });
     } else {
       this.setState({ route: route });
     }
   };
+  
   
   render() {
     const {route} = this.state;
